@@ -6,7 +6,6 @@ function sum(a, b) {
     return res;
   }
   else {
-    console.log('TypeError');
     throw new TypeError('not valid params');
   }
 }
