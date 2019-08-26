@@ -1,8 +1,7 @@
 function sum(a, b) {
   var res = 0;
-  var res = 0;
   if (Number(a) === a && Number(b) === b) {
-    res = a + b
+    res = a + b;
     return res;
   }
   else {

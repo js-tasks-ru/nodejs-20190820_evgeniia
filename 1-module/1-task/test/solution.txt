@@ -1,0 +1,7 @@
+James
+Richard
++John (correct solution)
+Robert
+-John (error)
+James
+Michael
