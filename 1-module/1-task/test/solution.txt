@@ -1,7 +1,6 @@
 James
 Richard
-+John (correct solution)
+John
 Robert
--John (error)
 James
 Michael
