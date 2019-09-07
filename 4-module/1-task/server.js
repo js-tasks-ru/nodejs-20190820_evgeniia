@@ -12,36 +12,31 @@ server.on('request', (req, res) => {
 
   switch (req.method) {
     case 'GET':
-      if (pathname.indexOf('/') !== -1) {
+      if (pathname.indexOf('/') !== -1) { //(pathname.split('/').length > 1)
         res.statusCode = 400;
-        res.end('No sub folders in path');
+        res.end('No sub folders in path.');
         return;
       }
       if (!fs.existsSync(filepath)) {
         res.statusCode = 404;
-        res.end('File not found');
+        res.end('File not found.');
         return;
       }
-
-      filepath = path.normalize(filepath);
       fs.stat(filepath, function(err, stats) {
         if (err || !stats.isFile()) {
           res.statusCode = 404;
-          res.end('Not found');
+          res.end('File not found.');
           return;
         }
         else if (stats.isFile()) {
-          let contentType = mime.lookup(filepath);
-          res.setHeader('Content-Type', contentType);
           let file = fs.createReadStream(filepath);
           file.on('open', function() {
             res.statusCode = 200;
             file.pipe(res);
           })
           file.on('error', function(err) {
-            console.log('error', err);
             res.writeHead(403);
-            res.write('file missing');
+            res.write('File missing.');
             res.end();
           })
         }
@@ -50,7 +45,7 @@ server.on('request', (req, res) => {
 
     default:
       res.statusCode = 501;
-      res.end('Not implemented');
+      res.end('Not implemented.');
   }
 });
 

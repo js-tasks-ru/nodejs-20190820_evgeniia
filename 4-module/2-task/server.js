@@ -16,7 +16,7 @@ server.on('request', (req, res) => {
     case 'POST': {
       if (pathname.indexOf('/') !== -1) { //(pathname.split('/').length > 1)
         res.statusCode = 400;
-        res.end('No sub folders in path');
+        res.end('No sub folders in path.');
         return;
       }
 
@@ -32,13 +32,14 @@ server.on('request', (req, res) => {
         const ws = fs.createWriteStream(filepath);
 
         req
-            .on('error', (err) => {
+            .on('aborted', (err) => {
               if (fs.existsSync(filepath)) {
-                fs.unlink(filepath, (err) => { res.end(); });
+                fs.unlink(filepath, (err) => { });
               }
               res.statusCode = 500;
               res.setHeader('Connection', 'close');
-              res.write('Internal error');
+              res.write('Internal error.');
+              res.end('Request aborted.');
             })
             .pipe(lss)
             .on('error', (err) => {
@@ -56,7 +57,7 @@ server.on('request', (req, res) => {
             .pipe(ws)
             .on('finish', () => {
               res.statusCode = 201;
-              res.end('File saved');
+              res.end('File saved.');
             });
       });
 
@@ -65,7 +66,7 @@ server.on('request', (req, res) => {
 
     default:
       res.statusCode = 501;
-      res.end('Not implemented');
+      res.end('Not implemented.');
   }
 });
 

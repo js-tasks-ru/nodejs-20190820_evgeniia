@@ -14,24 +14,24 @@ server.on('request', (req, res) => {
     case 'DELETE':
       if (pathname.split('/').length > 1) {
         res.statusCode = 400;
-        res.end('Subdirs not supported');
+        res.end('No sub folders in path.');
         return;
       }
       fs.exists(filepath, (exists) => {
         if (!exists) {
           res.statusCode = 404;
-          res.end('File not found');
+          res.end('File not found.');
           return;
         }
         else {
-          fs.unlink(public + pathname, err => {
+          fs.unlink(filepath, err => {
             if (err) {
               res.statusCode = 500;
-              res.end('Server error');
+              res.end('Server error.');
             }
             else {
               res.statusCode = 200;
-              res.end('File was deleted');
+              res.end('File was deleted.');
             }
           });
         }
@@ -40,7 +40,7 @@ server.on('request', (req, res) => {
 
     default:
       res.statusCode = 501;
-      res.end('Not implemented');
+      res.end('Not implemented.');
   }
 });
 
