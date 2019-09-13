@@ -4,22 +4,21 @@ const Product = require('../models/Product');
 module.exports.productsBySubcategory = async function productsBySubcategory(ctx, next) {
   if (ctx.query && mongoose.Types.ObjectId.isValid(ctx.query.subcategory)) {
     let products = await Product.find({ subcategory: ctx.query.subcategory });
-    if (!products) {
+    if (!products.length) {
       ctx.body = { products: [] };
-      return;
     }
     else {
       ctx.status = 200;
-      ctx.body = { products };
+      ctx.body = { products: products };
     }
   }
 };
 
 module.exports.productList = async function productList(ctx, next) {
   let products = await Product.find({});
-  if (products) {
+  if (products.length) {
     ctx.status = 200;
-    ctx.body = { products };
+    ctx.body = { products: products };
   }
   else {
     ctx.body = { products: [] };
@@ -32,11 +31,10 @@ module.exports.productById = async function productById(ctx, next) {
     if (!product) {
       ctx.status = 404;
       ctx.body = 'Not found';
-      return;
     }
     else {
       ctx.status = 200;
-      ctx.body = { product };
+      ctx.body = { product: product };
     }
   }
 
