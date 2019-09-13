@@ -5,7 +5,6 @@ module.exports.productsBySubcategory = async function productsBySubcategory(ctx,
   if (ctx.query && mongoose.Types.ObjectId.isValid(ctx.query.subcategory)) {
     let products = await Product.find({ subcategory: ctx.query.subcategory });
     if (!products) {
-      ctx.status = 404;
       ctx.body = { products: [] };
       return;
     }
@@ -13,11 +12,6 @@ module.exports.productsBySubcategory = async function productsBySubcategory(ctx,
       ctx.status = 200;
       ctx.body = { products };
     }
-    return next();
-  }
-  else {
-    ctx.status = 400;
-    return false;
   }
 };
 
@@ -28,9 +22,8 @@ module.exports.productList = async function productList(ctx, next) {
     ctx.body = { products };
   }
   else {
-    ctx.status = 404;
+    ctx.body = { products: [] };
   }
-  next();
 };
 
 module.exports.productById = async function productById(ctx, next) {
@@ -45,11 +38,6 @@ module.exports.productById = async function productById(ctx, next) {
       ctx.status = 200;
       ctx.body = { product };
     }
-    return next();
-  }
-  else {
-    ctx.status = 400;
-    return false;
   }
 
 };
