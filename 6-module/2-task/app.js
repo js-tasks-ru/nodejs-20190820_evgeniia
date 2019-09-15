@@ -4,6 +4,7 @@ const {productsBySubcategory, productList, productById} = require('./controllers
 const {categoryList} = require('./controllers/categories');
 
 const app = new Koa();
+app.use(require('koa-bodyparser')());
 
 app.use(async (ctx, next) => {
   try {
