@@ -23,7 +23,9 @@ const productSchema = new mongoose.Schema({
     type: mongoose.Types.ObjectId,
     required: true,
   },
+
   images: [String],
+
 });
 
 module.exports = connection.model('Product', productSchema);
