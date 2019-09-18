@@ -1,44 +1,49 @@
 const mongoose = require('mongoose');
 const Product = require('../models/Product');
+const Category = require('../models/Category');
 
 module.exports.productsBySubcategory = async function productsBySubcategory(ctx, next) {
   if (ctx.query.subcategory && mongoose.Types.ObjectId.isValid(ctx.query.subcategory)) {
-    let products = await Product.find({ subcategory: ctx.query.subcategory });
-    if (!products.length) {
-      ctx.body = { products: [] };
+    let products = await Product.find({ subcategory: {'_id': ctx.query.subcategory} });
+    ctx.res.statusCode = 200;
+    if (products.length) {
+      ctx.body = { products };
     }
     else {
-      ctx.body = { products: products };
+      ctx.body = { products: [] };
     }
-    ctx.status = 200;
-  }
-};
-
-module.exports.productList = async function productList(ctx, next) {
-  let products = await Product.find({});
-  if (products.length) {
-    ctx.body = { products: products };
   }
   else {
     ctx.body = { products: [] };
   }
-  ctx.status = 200;
+  next();
+};
+
+module.exports.productList = async function productList(ctx, next) {
+  let products = await Product.find({});
+  ctx.res.statusCode = 200;
+  if (products.length) {
+    ctx.body = { products };
+  }
+  else {
+    ctx.body = { products: [] };
+  }
+  next();
 };
 
 module.exports.productById = async function productById(ctx, next) {
-  if (ctx.query.id && mongoose.Types.ObjectId.isValid(ctx.query.id)) {
-    let product = await Product.findById(ctx.query.id);
-    if (!product) {
-      ctx.status = 404;
-      ctx.body = 'Not found';
+  if (ctx.params.id && mongoose.Types.ObjectId.isValid(ctx.params.id)) {
+    let data = await Product.findOne({'_id': ctx.params.id});
+    if (data) {
+      ctx.res.statusCode = 200;
+      ctx.body = { product: data };
     }
     else {
-      ctx.status = 200;
-      ctx.body = { product: product };
+      ctx.res.statusCode = 404;
     }
   }
   else {
-    ctx.status = 400;
+    ctx.res.statusCode = 400;
   }
 };
 
