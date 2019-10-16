@@ -32,6 +32,7 @@ const productSchema = new mongoose.Schema({
 
 });
 
+<<<<<<< HEAD
 productSchema.set('toJSON', {
   virtuals: true,
   versionKey: false,
@@ -49,6 +50,15 @@ productSchema.index(
       },
       name: 'TextSearchIndex',
     },
+=======
+productSchema.index(
+    {title: 'text', description: 'text'},
+    {
+      weights: {title: 10, description: 5},
+      default_language: 'russian',
+      name: 'TextSearchIndex',
+    }
+>>>>>>> 578e2fd33542e71f530c48322c22d1afa0caf48b
 );
 
 module.exports = connection.model('Product', productSchema);
